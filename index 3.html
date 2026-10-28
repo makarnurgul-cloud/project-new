@@ -1,0 +1,401 @@
+
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>day by day ♡</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Pacifico&display=swap');
+
+*{box-sizing:border-box}
+:root{--p:#7960ed;--ink:#302b68;--muted:#8884b1;--bg:#f1efff}
+body{margin:0;background:linear-gradient(135deg,#e9e6ff,#fbfaff,#e8e6ff);font-family:Nunito,sans-serif;color:var(--ink)}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.app{max-width:1450px;margin:auto;padding:14px;display:grid;grid-template-columns:205px 1fr;gap:14px;min-height:100vh}
+.sidebar,.main{background:#ffffffb8;border:1px solid #d9d3ff;border-radius:18px;box-shadow:0 8px 28px #7665d51c}
+.sidebar{padding:22px 13px;display:flex;flex-direction:column;min-height:calc(100vh - 28px)}
+.logo{font:20px Pacifico,cursive;color:#624bdd;margin:0 8px 28px}
+nav{display:grid;gap:7px}
+.nav{border:0;background:transparent;color:#7773a8;text-align:left;padding:12px;border-radius:10px;font-weight:800}
+.nav:hover,.nav.active{background:#e7e2ff;color:#654be6}
+.side-note{margin-top:auto;font-size:11px;line-height:1.7;color:#9991cb;padding:15px 5px}
+.main{padding:25px;min-width:0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:22px}
+h1{font-size:22px;margin:0 0 5px}
+.sub{font-size:12px;color:var(--muted);margin:0}
+.avatar{background:#a895fa;color:white;border-radius:50%;width:38px;height:38px;display:grid;place-items:center;font-weight:800}
+.page{display:none}.page.active{display:block}
+.hero{border-radius:16px;padding:35px 28px;color:white;min-height:170px;background:linear-gradient(120deg,#745bd4cc,#a58ce7aa),linear-gradient(45deg,#b4a1f5,#5d4bb1);position:relative;overflow:hidden}
+.hero:after{content:"✦  ♡  ✧";position:absolute;right:25px;top:20px;font-size:32px;color:#ffe0ff}
+.hero h2{font:34px Pacifico,cursive;margin:0 0 10px}
+.hero p{margin:0;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-top:15px}
+.card{background:#ffffffd9;border:1px solid #eeebff;border-radius:15px;padding:17px;box-shadow:0 5px 18px #7864d40b;min-width:0}
+.card h3{font-size:13px;margin:0 0 12px}
+.card p{font-size:12px;line-height:1.7;color:#7772a6}
+.big{font-size:28px;font-weight:800;color:var(--p)}
+.section-title{font-size:15px;margin:25px 0 12px}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.action{border:1px solid #e8e2ff;border-radius:12px;padding:15px;background:#f5f2ff;color:#624bdd;font-weight:800}
+.btn{border:0;background:linear-gradient(120deg,#917af7,#7051e8);color:white;border-radius:10px;padding:11px 16px;font-weight:800}
+input[type=text],textarea,select{border:1px solid #e5e0ff;background:#fcfbff;border-radius:10px;padding:12px;color:var(--ink);width:100%;outline:none}
+textarea{resize:vertical;min-height:130px}
+.form{display:flex;gap:10px;margin:15px 0}
+.form input{flex:1;min-width:0}
+.task{display:flex;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid #efedfa}
+.task:last-child{border-bottom:0}
+.task input{accent-color:var(--p);width:17px;height:17px}
+.task span{flex:1;font-size:13px;overflow-wrap:anywhere}
+.task.done span{text-decoration:line-through;color:#aaa5ca}
+.del{border:0;background:transparent;color:#a09ac8;font-size:18px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.filter{border:1px solid #e8e2ff;background:white;color:#7772a6;padding:8px 12px;border-radius:9px}
+.filter.active{background:var(--p);color:white}
+.intro{margin-bottom:20px}
+.intro h2{margin:0 0 5px;font-size:23px}
+.intro p{font-size:12px;color:var(--muted);margin:0}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;text-align:center}
+.calendar div{padding:10px 0;font-size:12px}
+.calendar .day{cursor:pointer;border-radius:50%}
+.calendar .day:hover,.calendar .selected{background:var(--p);color:white}
+.moods{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.mood{border:1px solid #eeeaff;background:#faf9ff;border-radius:12px;padding:14px 3px;color:#7772a6}
+.mood span{display:block;font-size:27px;margin-bottom:7px}
+.mood.selected{border-color:var(--p);background:#eeeaff}
+.chips{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}
+.chips label{font-size:12px}
+.entries{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:15px}
+.entry{white-space:pre-wrap;overflow-wrap:anywhere}
+.stat-num{font-size:30px;font-weight:800;color:var(--p)}
+.progress{height:8px;background:#e7e2ff;border-radius:9px;overflow:hidden;margin:12px 0}
+.progress div{height:100%;background:var(--p);width:0}
+.profile{display:grid;grid-template-columns:1fr 2fr;gap:14px}
+footer{text-align:center;font-size:11px;color:#9992c5;margin-top:28px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#5f4ac7;color:white;padding:12px 20px;border-radius:12px;display:none;z-index:5}
+.toast.show{display:block}
+@media(max-width:800px){
+.app{grid-template-columns:1fr;padding:8px}
+.sidebar{min-height:0;padding:12px;position:static}
+.logo{margin:0 5px 12px}
+nav{grid-template-columns:repeat(4,1fr)}
+.nav{text-align:center;padding:9px 3px;font-size:11px}
+.side-note{display:none}
+.main{padding:15px}
+.grid{grid-template-columns:1fr}
+.quick{grid-template-columns:1fr}
+.calendar-layout,.profile{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+.top h1{font-size:18px}
+.hero h2{font-size:28px}
+.moods{grid-template-columns:repeat(3,1fr)}
+.entries{grid-template-columns:1fr}
+.form{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+<div class="logo">day by day ♡</div>
+<nav>
+<button class="nav active" data-page="home">⌂ Басты бет</button>
+<button class="nav" data-page="tasks">☑ Тапсырмалар</button>
+<button class="nav" data-page="calendar">▦ Күнтізбе</button>
+<button class="nav" data-page="mood">♡ Көңіл күй</button>
+<button class="nav" data-page="diary">✎ Күнделік</button>
+<button class="nav" data-page="stats">◉ Статистика</button>
+<button class="nav" data-page="profile">♙ Профиль</button>
+</nav>
+<div class="side-note">Кішкентай қадамдар күн сайын үлкен нәтижелерге жеткізеді. ♡</div>
+</aside>
+
+<main class="main">
+<header class="top">
+<div>
+<h1 id="title">Сәлем! ♡</h1>
+<p class="sub" id="subtitle">Бүгін — өзің үшін тамаша күн.</p>
+</div>
+<div class="avatar" id="avatar">Н</div>
+</header>
+
+<section class="page active" id="home">
+<div class="hero">
+<h2>day by day ♡</h2>
+<p>Өзіңнің ең жақсы нұсқаңа қарай</p>
+<p>Кішкентай қадамдар — үлкен нәтижелер.</p>
+</div>
+<div class="grid">
+<div class="card">
+<h3>Бүгінгі прогресс</h3>
+<div class="big" id="percent">0%</div>
+<div class="progress"><div id="progress"></div></div>
+<p id="progress-text">Тапсырмаларды орындап баста!</p>
+</div>
+<div class="card">
+<h3>Бүгінгі көңіл күй</h3>
+<div class="big" id="home-mood">🙂 Жақсы</div>
+<p>Өзіңе уақыт бөлуді ұмытпа. ♡</p>
+</div>
+<div class="card">
+<h3>Күннің сөзі</h3>
+<p>«Үлкен жетістіктер кішкентай қадамдардан басталады». ♡</p>
+</div>
+</div>
+<h3 class="section-title">Жылдам әрекеттер</h3>
+<div class="quick">
+<button class="action" onclick="go('tasks')">＋ Тапсырма қосу</button>
+<button class="action" onclick="go('diary')">✎ Күнделік жазу</button>
+<button class="action" onclick="go('mood')">♡ Көңіл күй таңдау</button>
+</div>
+<div class="two">
+<h3 class="section-title">Бүгінгі тапсырмалар</h3>
+<div class="card" id="home-tasks"></div>
+</div>
+</section>
+
+<section class="page" id="tasks">
+<div class="intro"><h2>Тапсырмалар</h2><p>Жоспарла, орында, жетістігіңді белгіле. ♡</p></div>
+<form class="form" id="task-form">
+<input id="task-input" type="text" placeholder="Жаңа тапсырма жаз..." required>
+<button class="btn">＋ Қосу</button>
+</form>
+<div class="filters">
+<button class="filter active" data-filter="all">Барлығы</button>
+<button class="filter" data-filter="today">Бүгін</button>
+<button class="filter" data-filter="important">Маңызды</button>
+<button class="filter" data-filter="done">Орындалған</button>
+</div>
+<div class="card" id="task-list"></div>
+</section>
+
+<section class="page" id="calendar">
+<div class="intro"><h2>Күнтізбе</h2><p>Күндеріңді жоспарла. ♡</p></div>
+<div class="grid calendar-layout">
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<button class="filter" id="prev">‹</button>
+<h3 id="month"></h3>
+<button class="filter" id="next">›</button>
+</div>
+<div class="calendar" id="calendar-grid"></div>
+</div>
+<div class="card">
+<h3 id="selected-date">Бүгін</h3>
+<p>Тапсырмалар тізімі</p>
+<div id="calendar-tasks"></div>
+</div>
+</div>
+</section>
+
+<section class="page" id="mood">
+<div class="intro"><h2>Көңіл күй</h2><p>Сезімдерің маңызды. Өзіңді тыңда. ♡</p></div>
+<div class="card">
+<h3>Бүгін өзіңді қалай сезініп тұрсың?</h3>
+<div class="moods">
+<button class="mood selected" data-mood="Керемет" data-emoji="😄"><span>😄</span>Керемет</button>
+<button class="mood" data-mood="Жақсы" data-emoji="🙂"><span>🙂</span>Жақсы</button>
+<button class="mood" data-mood="Қалыпты" data-emoji="😐"><span>😐</span>Қалыпты</button>
+<button class="mood" data-mood="Мұңды" data-emoji="😔"><span>😔</span>Мұңды</button>
+<button class="mood" data-mood="Шаршадым" data-emoji="🥱"><span>🥱</span>Шаршадым</button>
+</div>
+<h3 style="margin-top:22px">Көңіл күйіңе не әсер етті?</h3>
+<div class="chips">
+<label><input type="checkbox" value="Оқу"> Оқу</label>
+<label><input type="checkbox" value="Демалыс"> Демалыс</label>
+<label><input type="checkbox" value="Достар"> Достар</label>
+<label><input type="checkbox" value="Спорт"> Спорт</label>
+<label><input type="checkbox" value="Отбасы"> Отбасы</label>
+</div>
+<textarea id="mood-note" placeholder="Қаласаң, сезімің туралы жаз..."></textarea>
+<button class="btn" id="save-mood">Сақтау</button>
+</div>
+</section>
+
+<section class="page" id="diary">
+<div class="intro"><h2>Күнделік</h2><p>Ойыңды жаз. Бұл өзіңді жақсырақ түсінуге көмектеседі. ♡</p></div>
+<div class="card">
+<h3>Бүгінгі ойларың</h3>
+<textarea id="diary-input" placeholder="Бүгінгі күнің қалай өтті? Не сезіндің?"></textarea>
+<button class="btn" id="save-entry">♡ Жазбаны сақтау</button>
+</div>
+<h3 class="section-title">Менің жазбаларым</h3>
+<div class="entries" id="entries"></div>
+</section>
+
+<section class="page" id="stats">
+<div class="intro"><h2>Статистика</h2><p>Өзіңнің өсуіңді байқап көр. ♡</p></div>
+<div class="grid">
+<div class="card"><h3>Барлық тапсырма</h3><div class="stat-num" id="total">0</div></div>
+<div class="card"><h3>Орындалған</h3><div class="stat-num" id="completed">0</div></div>
+<div class="card"><h3>Күнделік жазбалары</h3><div class="stat-num" id="entry-count">0</div></div>
+</div>
+<div class="card" style="margin-top:15px">
+<h3>Тапсырмалардың орындалуы</h3>
+<div class="progress"><div id="stats-progress"></div></div>
+<p id="stats-text"></p>
+</div>
+</section>
+
+<section class="page" id="profile">
+<div class="intro"><h2>Профиль</h2><p>Өзіңе ыңғайлы етіп бапта. ♡</p></div>
+<div class="profile">
+<div class="card" style="text-align:center">
+<div class="avatar" style="width:75px;height:75px;font-size:27px;margin:10px auto" id="profile-avatar">Н</div>
+<h3 id="profile-display">Нұргүл</h3>
+<p>Өзіңнің ең жақсы нұсқаңа қарай ♡</p>
+</div>
+<div class="card">
+<h3>Жеке мәліметтер</h3>
+<label>Есімің</label>
+<input type="text" id="name-input" value="Нұргүл">
+<label style="display:block;margin-top:12px">Мақсатың</label>
+<input type="text" id="goal-input" value="Өзіңе уақыт бөлу">
+<button class="btn" id="save-profile" style="margin-top:15px">Сақтау</button>
+</div>
+</div>
+</section>
+
+<footer>day by day ♡ — Кішкентай қадамдар, үлкен нәтижелер.</footer>
+</main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const $$=s=>[...document.querySelectorAll(s)];
+const today=new Date();
+const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const pretty=d=>d.toLocaleDateString('kk-KZ',{day:'numeric',month:'long',year:'numeric'});
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let tasks=JSON.parse(localStorage.getItem('dbd_tasks')||'[]');
+let entries=JSON.parse(localStorage.getItem('dbd_entries')||'[]');
+let moods=JSON.parse(localStorage.getItem('dbd_moods')||'[]');
+let filter='all',mood='Жақсы',emoji='🙂';
+let cal=new Date(today.getFullYear(),today.getMonth(),1),selectedDay=iso(today);
+
+if(!tasks.length)tasks=[
+{id:1,title:'Бағдарламалау оқу',done:false,priority:'Маңызды',date:iso(today)},
+{id:2,title:'Кітап оқу',done:false,priority:'Кәдімгі',date:iso(today)},
+{id:3,title:'Ағылшын тілін үйрену',done:false,priority:'Кәдімгі',date:iso(today)}
+];
+
+function save(){
+localStorage.setItem('dbd_tasks',JSON.stringify(tasks));
+localStorage.setItem('dbd_entries',JSON.stringify(entries));
+localStorage.setItem('dbd_moods',JSON.stringify(moods));
+}
+function toast(text){
+const t=$('#toast');t.textContent=text;t.classList.add('show');
+setTimeout(()=>t.classList.remove('show'),2000);
+}
+const pageNames={
+home:['Сәлем! ♡','Бүгін — өзің үшін кішкентай қадам жасауға тамаша күн.'],
+tasks:['Тапсырмалар','Жоспарла, орында, жетістігіңді белгіле.'],
+calendar:['Күнтізбе','Уақытыңды жоспарла.'],
+mood:['Көңіл күй','Сезімдерің маңызды.'],
+diary:['Күнделік','Ойыңды жаз. Өзіңді тыңда.'],
+stats:['Статистика','Қаншалықты өскеніңді байқап көр.'],
+profile:['Профиль','Өзіңе ыңғайлы етіп бапта.']
+};
+function go(page){
+$$('.page').forEach(x=>x.classList.toggle('active',x.id===page));
+$$('.nav').forEach(x=>x.classList.toggle('active',x.dataset.page===page));
+$('#title').textContent=pageNames[page][0];
+$('#subtitle').textContent=pageNames[page][1];
+renderAll();
+}
+$$('.nav').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
+
+function renderTasks(){
+const home=$('#home-tasks');
+const filtered=tasks.filter(t=>filter==='all'||(filter==='today'&&t.date===iso(today))||(filter==='important'&&t.priority==='Маңызды')||(filter==='done'&&t.done));
+function html(list){return list.length?list.map(t=>`
+<div class="task ${t.done?'done':''}">
+<input type="checkbox" data-check="${t.id}" ${t.done?'checked':''}>
+<span>${esc(t.title)} ${t.priority==='Маңызды'?'♡':''}</span>
+<button class="del" data-del="${t.id}">×</button>
+</div>`).join(''):'<p>Әзірге тапсырма жоқ. Жаңасын қосып көр ♡</p>'}
+home.innerHTML=html(tasks.slice(0,4));
+$('#task-list').innerHTML=html(filtered);
+$$('[data-check]').forEach(c=>c.onchange=()=>{
+const t=tasks.find(x=>x.id===Number(c.dataset.check));if(t)t.done=c.checked;
+save();renderAll();
+});
+$$('[data-del]').forEach(b=>b.onclick=()=>{
+tasks=tasks.filter(x=>x.id!==Number(b.dataset.del));save();renderAll();toast('Тапсырма жойылды');
+});
+const done=tasks.filter(t=>t.done).length;
+const pct=tasks.length?Math.round(done/tasks.length*100):0;
+$('#percent').textContent=pct+'%';$('#progress').style.width=pct+'%';
+$('#progress-text').textContent=`${done} / ${tasks.length} тапсырма орындалды`;
+$('#total').textContent=tasks.length;$('#completed').textContent=done;
+$('#stats-progress').style.width=pct+'%';$('#stats-text').textContent=`Орындалу көрсеткіші: ${pct}%`;
+}
+$('#task-form').addEventListener('submit',e=>{
+e.preventDefault();const input=$('#task-input');const title=input.value.trim();if(!title)return;
+tasks.unshift({id:Date.now(),title,done:false,priority:'Кәдімгі',date:iso(today)});
+input.value='';save();renderAll();toast('Тапсырма қосылды ♡');
+});
+$$('.filter').forEach(b=>b.onclick=()=>{
+if(!b.dataset.filter)return;
+filter=b.dataset.filter;$$('.filter').forEach(x=>x.classList.toggle('active',x===b));renderTasks();
+});
+
+function renderCalendar(){
+const y=cal.getFullYear(),m=cal.getMonth();
+$('#month').textContent=cal.toLocaleDateString('kk-KZ',{month:'long',year:'numeric'});
+const first=(new Date(y,m,1).getDay()+6)%7,days=new Date(y,m+1,0).getDate();
+let html=['Дс','Сс','Ср','Бс','Жм','Сб','Жс'].map(d=>`<div>${d}</div>`).join('');
+for(let i=0;i<first;i++)html+='<div></div>';
+for(let d=1;d<=days;d++){
+const key=iso(new Date(y,m,d));
+html+=`<div class="day ${key===selectedDay?'selected':''}" data-day="${key}">${d}</div>`;
+}
+$('#calendar-grid').innerHTML=html;
+$$('[data-day]').forEach(el=>el.onclick=()=>{selectedDay=el.dataset.day;renderCalendar()});
+$('#selected-date').textContent=pretty(new Date(selectedDay+'T12:00:00'));
+const list=tasks.filter(t=>t.date===selectedDay);
+$('#calendar-tasks').innerHTML=list.length?list.map(t=>`<div class="task"><span>${t.done?'☑':'○'}</span><span>${esc(t.title)}</span></div>`).join(''):'<p>Бұл күнге жоспар жоқ. ♡</p>';
+}
+$('#prev').onclick=()=>{cal=new Date(cal.getFullYear(),cal.getMonth()-1,1);renderCalendar()};
+$('#next').onclick=()=>{cal=new Date(cal.getFullYear(),cal.getMonth()+1,1);renderCalendar()};
+
+$$('.mood').forEach(b=>b.onclick=()=>{
+$$('.mood').forEach(x=>x.classList.toggle('selected',x===b));
+mood=b.dataset.mood;emoji=b.dataset.emoji;
+});
+$('#save-mood').onclick=()=>{
+moods.unshift({date:iso(today),mood,emoji,note:$('#mood-note').value});
+save();$('#home-mood').textContent=emoji+' '+mood;toast('Көңіл күй сақталды ♡');
+};
+
+function renderEntries(){
+$('#entries').innerHTML=entries.length?entries.map((e,i)=>`
+<div class="card"><h3>${esc(e.date)}</h3><p class="entry">${esc(e.text)}</p>
+<button class="filter" data-entry-del="${i}">Жою</button></div>`).join(''):'<div class="card"><p>Әзірге жазба жоқ. Бүгінгі күнің туралы жазып көр ♡</p></div>';
+$('#entry-count').textContent=entries.length;
+$$('[data-entry-del]').forEach(b=>b.onclick=()=>{
+entries.splice(Number(b.dataset.entryDel),1);save();renderEntries();toast('Жазба жойылды');
+});
+}
+$('#save-entry').onclick=()=>{
+const text=$('#diary-input').value.trim();if(!text){toast('Алдымен жазба жаз ♡');return}
+entries.unshift({date:pretty(today),text});
+$('#diary-input').value='';save();renderEntries();toast('Жазба сақталды ♡');
+};
+$('#save-profile').onclick=()=>{
+const name=$('#name-input').value.trim()||'Досым';
+$('#profile-display').textContent=name;$('#avatar').textContent=name[0].toUpperCase();
+$('#profile-avatar').textContent=name[0].toUpperCase();
+$('#title').textContent='Сәлем, '+name+'! ♡';
+toast('Профиль сақталды');
+};
+function renderAll(){renderTasks();renderCalendar();renderEntries()}
+renderAll();
+</script>
+</body>
+</html>
+
